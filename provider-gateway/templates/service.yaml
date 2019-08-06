@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "provider-gateway.fullname" . }}
+  labels:
+    app: {{ template "provider-gateway.name" . }}
+    chart: {{ template "provider-gateway.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: {{ template "provider-gateway.name" . }}
+    release: {{ .Release.Name }}

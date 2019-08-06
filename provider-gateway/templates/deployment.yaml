@@ -1,0 +1,92 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ template "provider-gateway.fullname" . }}
+  labels:
+    app: {{ template "provider-gateway.name" . }}
+    chart: {{ template "provider-gateway.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "provider-gateway.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "provider-gateway.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8000
+              protocol: TCP
+          env:
+            - name: ADMIN_AUTH
+              value: {{ .Values.admin.auth }}
+            - name: ADMIN_OIDC_CLIENT_ID
+              value: {{ .Values.admin.client_id }}
+            - name: ADMIN_OIDC_CLIENT_SECRET
+              value: {{ .Values.admin.client_secret }}
+            - name: ADMIN_OIDC_HOST
+              value: {{ .Values.admin.host }}
+            - name: ADMIN_OIDC_REALM
+              value: {{ .Values.admin.realm }}
+            - name: AUTH_MODEL
+              value: {{ .Values.auth.model }}
+            - name: VAULT_URI
+              value: {{ .Values.auth.uri }}
+            - name: VAULT_TOKEN
+              value: "{{ .Values.auth.token }}"
+
+
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          volumeMounts:
+          - name: config-volume
+            mountPath: {{ .Values.providergw.config_mount }}
+        {{- if .Values.providergw.security.ssh.enabled }}
+          - name: ssh-secrets
+            readOnly: true
+            mountPath: /root/.ssh
+        {{- end }}
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+      volumes:
+        {{- if .Values.providergw.security.ssh.enabled }}
+        - name: ssh-secrets
+          secret:
+            secretName: {{ .Values.providergw.security.ssh.secretName }}
+            defaultMode: 256
+        {{- end }}
+        - name: config-volume
+        {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ if .Values.persistence.existingClaim }}{{ .Values.persistence.existingClaim }}{{- else }}{{ template "provider-gateway.fullname" . }}{{- end }}
+        {{- else }}
+          emptyDir: {}
+        {{- end -}}

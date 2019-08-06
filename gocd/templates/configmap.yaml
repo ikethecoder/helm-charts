@@ -1,0 +1,102 @@
+{{- if .Values.server.shouldPreconfigure }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "gocd.fullname" . }}
+  labels:
+    app: {{ template "gocd.name" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+data:
+  gitconfig: |-
+    [credential]
+          helper = store --file=/home/go/.git-credential-store/.git-credentials
+    [user]
+      name = saas_express_agent
+      email = saas_express_agent@canzea.com       
+  preconfigure_server.sh: |-
+    #!/bin/bash
+
+    SERVICE_ACCOUNT_PATH=/var/run/secrets/kubernetes.io/serviceaccount
+    KUBE_TOKEN=$(<${SERVICE_ACCOUNT_PATH}/token)
+
+    while true
+    do
+      status_code=$(curl 'http://localhost:8153/go/api/v1/health' -o /dev/null -w "%{http_code}")
+      if [ $status_code == 200 ]; then
+        break
+      fi
+      echo "Waiting... $status_code" >> /godata/logs/preconfigure.log
+      sleep 10
+    done
+
+    set -e
+
+    echo "checking if server has already been configured" >> /godata/logs/preconfigure.log
+
+    if [ -f /godata/logs/preconfigure_complete.log ]
+    then
+      echo "Existing server configuration found in cruise-config.xml. Skipping preconfigure_server scripts." >> /godata/logs/preconfigure.log
+      exit 0
+    fi
+
+    echo "No configuration found in cruise-config.xml. Using default preconfigure_server scripts to configure server" >> /godata/logs/preconfigure.log
+
+    echo "Trying to configure plugin settings." >> /godata/logs/preconfigure.log
+
+    (curl -v -i 'http://localhost:8153/go/api/admin/plugin_settings' \
+      -H 'Accept: application/vnd.go.cd.v1+json' \
+      -H 'Content-Type: application/json' \
+      -X POST -d '{
+        "plugin_id": "cd.go.contrib.elasticagent.kubernetes",
+        "configuration": [
+          {
+            "key": "go_server_url",
+            "value": "https://{{ template "gocd.fullname" . }}-server:{{ .Values.server.service.httpsPort }}/go"
+          },
+          {
+            "key": "kubernetes_cluster_url",
+            "value": "https://'$KUBERNETES_SERVICE_HOST':'$KUBERNETES_SERVICE_PORT_HTTPS'"
+          },
+          {
+            "key": "kubernetes_cluster_ca_cert",
+            "value": "{{ .Values.kubernetes.ca_cert }}"
+          },
+          {
+            "key": "namespace",
+            "value": "{{ .Release.Namespace }}"
+          },
+          {
+            "key": "security_token",
+            "value": "'$KUBE_TOKEN'"
+          },
+          {
+            "key": "pending_pods_count",
+            "value": "10"
+          },
+          {
+            "key": "auto_register_timeout",
+            "value": ""
+          }
+        ]
+      }' >> /godata/logs/preconfigure.log)
+
+
+    (curl -v -i 'http://localhost:8153/go/api/admin/security/auth_configs' \
+      -H 'Accept: application/vnd.go.cd.v1+json' \
+      -H 'Content-Type: application/json' \
+      -X POST -d '{
+        "id": "admin",
+        "plugin_id": "cd.go.authentication.passwordfile",
+        "properties": [
+          {
+            "key": "PasswordFilePath",
+            "value": "/etc/go/.passwords"
+          }
+        ]
+      }' >> /godata/logs/preconfigure.log)
+
+    echo "Done preconfiguring the GoCD server" > /godata/logs/preconfigure_complete.log
+
+{{- end }}
