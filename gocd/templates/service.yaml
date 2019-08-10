@@ -30,6 +30,11 @@ spec:
       protocol: TCP
       name: http
 
+    - port: 8887
+      targetPort: 8887
+      protocol: TCP
+      name: websocket
+      
     - port: {{ .Values.server.service.httpsPort }}
       targetPort: 8154
       {{- if .Values.server.service.nodeHttpsPort }}
