@@ -66,7 +66,7 @@ spec:
         command: ["/bin/sh"]
         args:
           - "-c"
-          - "cp /config/gitconfig /home/go/.gitconfig; cp /config/gocd-websocket-notifier.conf /home/go/gocd-websocket-notifier.conf"
+          - "cp /config/gitconfig /home/go/.gitconfig && cp /config/gocd-websocket-notifier.conf /home/go/gocd-websocket-notifier.conf"
       {{- if .Values.server.initContainers }}
 {{ toYaml .Values.server.initContainers | indent 8 }}
       {{- end }}
