@@ -2,7 +2,7 @@ apiVersion: v1
 entries:
   gitea:
   - appVersion: 1.6.1
-    created: 2019-08-10T12:47:16.174908708-07:00
+    created: 2019-08-10T13:03:28.213769595-07:00
     description: Git with a cup of tea
     digest: 2fb275b10fa5a47ccd43b693147f1b7618bac1e1fc3de559ad122bb561954629
     icon: https://docs.gitea.io/images/gitea.png
@@ -25,10 +25,39 @@ entries:
     version: 1.6.1
   gocd:
   - appVersion: 19.1.0
-    created: 2019-08-10T12:47:16.175984609-07:00
+    created: 2019-08-10T13:03:28.216242725-07:00
     description: GoCD is an open-source continuous delivery server to model and visualize
       complex workflows with ease.
-    digest: cade3db9b1eda270a1ce7f5c56b154277c51c50c1c76d4e664345618059b8aa5
+    digest: 5fcec856df0aaf721298c7f19cb01b49f9d8e93915ae0d03d5de019e179c40c1
+    home: https://www.gocd.org/
+    icon: https://gocd.github.io/assets/images/go-icon-black-192x192.png
+    keywords:
+    - gocd
+    - ci
+    - cd
+    - ci/cd
+    - continuous-integration
+    - continuous-delivery
+    - continuous-deployment
+    - continuous-testing
+    maintainers:
+    - email: arvind@thoughtworks.com
+      name: arvindsv
+    - email: ganeshpl@thoughtworks.com
+      name: ganeshspatil
+    - email: varshasvaradarajan@gmail.com
+      name: varshavaradarajan
+    name: gocd
+    sources:
+    - https://github.com/gocd/gocd
+    urls:
+    - gocd-1.6.8.tgz
+    version: 1.6.8
+  - appVersion: 19.1.0
+    created: 2019-08-10T13:03:28.2150332-07:00
+    description: GoCD is an open-source continuous delivery server to model and visualize
+      complex workflows with ease.
+    digest: 08e4de67baab1c03790422b083472272615437cea6d647266ca6db0f50e04446
     home: https://www.gocd.org/
     icon: https://gocd.github.io/assets/images/go-icon-black-192x192.png
     keywords:
@@ -56,11 +85,11 @@ entries:
   provider-gateway:
   - apiVersion: v1
     appVersion: "1.0"
-    created: 2019-08-10T12:47:16.176284348-07:00
+    created: 2019-08-10T13:03:28.216627661-07:00
     description: A Helm chart for Kubernetes
     digest: 6d1c753b990ae923b462f9af586d8829ea67815651a031be25f54325657e6c68
     name: provider-gateway
     urls:
     - provider-gateway-0.1.0.tgz
     version: 0.1.0
-generated: 2019-08-10T12:47:16.173523939-07:00
+generated: 2019-08-10T13:03:28.212378384-07:00
