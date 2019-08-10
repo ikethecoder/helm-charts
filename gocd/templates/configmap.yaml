@@ -15,6 +15,9 @@ data:
     [user]
       name = saas_express_agent
       email = saas_express_agent@canzea.com       
+  gocd-websocket-notifier.conf: |-
+    goUser={{ .Values.server.plugins.websocket_user }}
+    goPassword={{ .Values.server.plugins.websocket_password }}
   preconfigure_server.sh: |-
     #!/bin/bash
 
