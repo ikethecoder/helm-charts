@@ -28,6 +28,10 @@ server:
   preconfigureCommand:
     - "/bin/bash"
     - "/preconfigure_server.sh"
+  plugins:
+    websocket_user: ""
+    websocket_password: ""
+
   image:
     # server.image.repository is the GoCD Server image name
     repository: "gocd/gocd-server"
