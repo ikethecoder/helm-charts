@@ -1,10 +1,11 @@
 apiVersion: v1
 entries:
   gitea:
-  - appVersion: 1.6.1
-    created: 2019-08-10T13:32:50.646948697-07:00
+  - apiVersion: v1
+    appVersion: 1.6.1
+    created: "2020-05-18T12:37:01.134211-07:00"
     description: Git with a cup of tea
-    digest: 2fb275b10fa5a47ccd43b693147f1b7618bac1e1fc3de559ad122bb561954629
+    digest: cb098ebd480523ff752db26df32cb70962832770756240b016c8b4723e0c9516
     icon: https://docs.gitea.io/images/gitea.png
     keywords:
     - git
@@ -24,11 +25,12 @@ entries:
     - gitea-1.6.1.tgz
     version: 1.6.1
   gocd:
-  - appVersion: 19.1.0
-    created: 2019-08-10T13:32:50.652357707-07:00
+  - apiVersion: v1
+    appVersion: 19.1.0
+    created: "2020-05-18T12:37:01.138687-07:00"
     description: GoCD is an open-source continuous delivery server to model and visualize
       complex workflows with ease.
-    digest: 25c14697eec0fd05206f79a33e56a2e71ccde98417b1afdf2d278d63d84f308f
+    digest: 4cb56cf9d6ee2a224715a0406d0f5d29128a565688b462b237be26342ff6ee26
     home: https://www.gocd.org/
     icon: https://gocd.github.io/assets/images/go-icon-black-192x192.png
     keywords:
@@ -54,7 +56,7 @@ entries:
     - gocd-1.6.9.tgz
     version: 1.6.9
   - appVersion: 19.1.0
-    created: 2019-08-10T13:32:50.651073956-07:00
+    created: "2020-05-18T12:37:01.137572-07:00"
     description: GoCD is an open-source continuous delivery server to model and visualize
       complex workflows with ease.
     digest: 5fcec856df0aaf721298c7f19cb01b49f9d8e93915ae0d03d5de019e179c40c1
@@ -83,7 +85,7 @@ entries:
     - gocd-1.6.8.tgz
     version: 1.6.8
   - appVersion: 19.1.0
-    created: 2019-08-10T13:32:50.649121857-07:00
+    created: "2020-05-18T12:37:01.135685-07:00"
     description: GoCD is an open-source continuous delivery server to model and visualize
       complex workflows with ease.
     digest: 08e4de67baab1c03790422b083472272615437cea6d647266ca6db0f50e04446
@@ -114,11 +116,11 @@ entries:
   provider-gateway:
   - apiVersion: v1
     appVersion: "1.0"
-    created: 2019-08-10T13:32:50.652706392-07:00
+    created: "2020-05-18T12:37:01.138997-07:00"
     description: A Helm chart for Kubernetes
     digest: 6d1c753b990ae923b462f9af586d8829ea67815651a031be25f54325657e6c68
     name: provider-gateway
     urls:
     - provider-gateway-0.1.0.tgz
     version: 0.1.0
-generated: 2019-08-10T13:32:50.645481076-07:00
+generated: "2020-05-18T12:37:01.132172-07:00"
